@@ -21,9 +21,14 @@ module.exports = async function (knex, interaction) {
   }
 
   interaction.guild.members.fetch().then(async (fetchedMembers) => {
-    let filteredMembers = fetchedMembers.filter((user) =>
+    let filteredMembersHash = {};
+    const filteredMembers = fetchedMembers.filter((user) =>
       user._roles ? user._roles.includes(roleId) : false
     );
+
+    filteredMembers.forEach((member) => {
+      filteredMembersHash[member.user.id] = member;
+    });
 
     const results = await knex({ m: "defaultdb.mocks" })
       .select({
@@ -58,9 +63,11 @@ module.exports = async function (knex, interaction) {
     });
 
     Object.keys(playerRunDict).map((key) => {
-      let filter = filteredMembers.find((member) => member.user.id == key);
-      playerRunDict[filter.nickname ? filter.nickname : filter.user.username] =
-        playerRunDict[key];
+      const filter = filteredMembersHash[key]
+        ? filteredMembersHash[key].nickname
+        : filteredMembersHash[key].user.username;
+
+      playerRunDict[filter || "Unknown User"] = playerRunDict[key];
       delete playerRunDict[key];
     });
 

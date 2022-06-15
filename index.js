@@ -5,6 +5,8 @@ const { Client, Intents } = require("discord.js");
 const config = require("./knexfile.js");
 const knex = require("knex")(config);
 
+const { token } = process.env.DISCORD_TOKEN;
+
 const logRun = require("./commands/log-run");
 const mockRun = require("./commands/mock-run");
 const scoreboard = require("./commands/scoreboard");
@@ -14,8 +16,6 @@ const reportOtherRun = require("./commands/report-other-run.js");
 const mockSomeoneElse = require("./commands/mock-someone-else.js");
 const familiaTotals = require("./commands/familia-totals.js");
 
-const { token } = process.env.DISCORD_TOKEN;
-
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS],
 });
@@ -24,7 +24,7 @@ client.once("ready", () => {
   console.log("Ready!");
 });
 
-function daySwap() {
+async function daySwap() {
   const newDate = new Date().setHours(8, 0, 0, 0);
 
   if (Date.now() > new Date(newDate)) {
@@ -42,28 +42,35 @@ client.on("interactionCreate", async (interaction) => {
 
   const { commandName } = interaction;
 
-  // This should be converted into a command dictionary instead of an else if chain, but waiting for an update to discord.js
-  if (commandName === "log-run") {
-    daySwap();
-    await logRun(knex, interaction);
-  } else if (commandName === "mock-run") {
-    await mockRun(knex, interaction);
-  } else if (commandName === "scoreboard") {
-    await scoreboard(knex, interaction);
-  } else if (commandName === "best-score") {
-    await bestScore(knex, interaction);
-  } else if (commandName === "list-noruns") {
-    daySwap();
-    await listNoRuns(knex, interaction);
-  } else if (commandName === "report-other-run") {
-    daySwap();
-    await reportOtherRun(knex, interaction);
-  } else if (commandName === "mock-someone-else") {
-    daySwap();
-    await mockSomeoneElse(knex, interaction);
-  } else if (commandName === "familia-totals") {
-    daySwap();
-    await familiaTotals(knex, interaction);
+  await daySwap();
+  switch (commandName) {
+    case "log-run":
+      await logRun(knex, interaction);
+      break;
+    case "mock-run":
+      await mockRun(knex, interaction);
+      break;
+    case "scoreboard":
+      await scoreboard(knex, interaction);
+      break;
+    case "best-score":
+      await bestScore(knex, interaction);
+      break;
+    case "list-noruns":
+      await listNoRuns(knex, interaction);
+      break;
+    case "report-other-run":
+      await reportOtherRun(knex, interaction);
+      break;
+    case "mock-someone-else":
+      await mockSomeoneElse(knex, interaction);
+      break;
+    case "familia-totals":
+      await familiaTotals(knex, interaction);
+      break;
+    default:
+      await interaction.reply(`Command ${commandName} not found.`);
+      break;
   }
 });
 
