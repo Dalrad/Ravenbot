@@ -1,0 +1,4 @@
+config.json
+.env
+nohup.out
+node_modules
