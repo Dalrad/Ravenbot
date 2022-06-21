@@ -15,6 +15,10 @@ const listNoRuns = require("./commands/list-noruns");
 const reportOtherRun = require("./commands/report-other-run.js");
 const mockSomeoneElse = require("./commands/mock-someone-else.js");
 const familiaTotals = require("./commands/familia-totals.js");
+const eventScoreboard = require("./commands/event-scoreboard.js");
+const logEvent = require("./commands/log-event.js");
+const removeEvent = require("./commands/remove-event.js");
+const clearEvent = require("./commands/clear-event.js");
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS],
@@ -67,6 +71,18 @@ client.on("interactionCreate", async (interaction) => {
       break;
     case "familia-totals":
       await familiaTotals(knex, interaction);
+      break;
+    case "log-event":
+      await logEvent(knex, interaction);
+      break;
+    case "remove-event":
+      await removeEvent(knex, interaction);
+      break;
+    case "clear-event":
+      await clearEvent(knex, interaction);
+      break;
+    case "event-scoreboard":
+      await eventScoreboard(knex, interaction);
       break;
     default:
       await interaction.reply(`Command ${commandName} not found.`);

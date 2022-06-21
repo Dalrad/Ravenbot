@@ -18,12 +18,13 @@ module.exports = async function (knex, interaction) {
   );
   const resultsC = await knex({ h: "defaultdb.history" }).where("h.familia", "Ravenwood");
 
-  let RavengardeRuns = resultsA.length;
-  let RavenheartRuns = resultsB.length;
-  let RavenwoodRuns = resultsC.length;
+  const RavengardeRuns = resultsA.length;
+  const RavenheartRuns = resultsB.length;
+  const RavenwoodRuns = resultsC.length;
 
   interaction.guild.members.fetch().then(async (fetchedMembers) => {
-    let collectedResults = [...resultsA, ...resultsB, ...resultsC];
+    const collectedResults = [...resultsA, ...resultsB, ...resultsC];
+
     let obj = {};
     collectedResults.forEach((result) => {
       if (!obj[result.discord_id]) {
@@ -39,7 +40,7 @@ module.exports = async function (knex, interaction) {
     });
 
     let arrayOfCount = filteredMemberArray.map((member) => {
-      let count = [...collectedResults].filter(
+      const count = [...collectedResults].filter(
         (x) => x.discord_id == member.user.id
       ).length;
 

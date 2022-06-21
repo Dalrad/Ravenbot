@@ -10,14 +10,20 @@ const idEnum = require("../enum/idEnum");
  * @param {object} interaction - User interaction that triggered the command
  */
 module.exports = async function (knex, interaction) {
-  let familia = interaction.options.getString("familia");
+  const familia = interaction.options.getString("familia");
 
-  if (familia == "Ravengarde") {
-    roleId = idEnum.RavengardeID;
-  } else if (familia == "Ravenwood") {
-    roleId = idEnum.RavenwoodID;
-  } else if (familia == "Ravenheart") {
-    roleId = idEnum.RavenheartID;
+  switch (familia) {
+    case "Ravengarde":
+      roleId = idEnum.RavengardeID;
+      break;
+    case "Ravenwood":
+      roleId = idEnum.RavenwoodID;
+      break;
+    case "Ravenheart":
+      roleId = idEnum.RavenheartID;
+      break;
+    default:
+      break;
   }
 
   interaction.guild.members.fetch().then(async (fetchedMembers) => {
