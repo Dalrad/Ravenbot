@@ -202,6 +202,97 @@ const commands = [
   new SlashCommandBuilder()
     .setName("familia-totals")
     .setDescription("Display daily run totals for each familia"),
+  new SlashCommandBuilder()
+    .setName("event-scoreboard")
+    .setDescription("Display current scoreboard for all participants")
+    .addStringOption((option) =>
+      option
+        .setName("scoreboard-mode")
+        .setDescription("Specify whether the mode should average by player count or not")
+        .setRequired(true)
+        .addChoice("Average by player count", "average")
+        .addChoice("Use raw scores", "raw")
+    ),
+  new SlashCommandBuilder()
+    .setName("log-event")
+    .setDescription("Display current scoreboard for all participants")
+    .addStringOption((option) =>
+      option
+        .setName("event")
+        .setDescription("What event this is for")
+        .setRequired(true)
+        .addChoice("Fire Zone", "Fire")
+        .addChoice("Water Zone", "Water")
+        .addChoice("Light Zone", "Light")
+        .addChoice("Dark Zone", "Dark")
+        .addChoice("Earth Zone", "Earth")
+        .addChoice("Wind Zone", "Wind")
+        .addChoice("Thunder Zone", "Thunder")
+    )
+    .addStringOption((option) =>
+      option
+        .setName("familia")
+        .setDescription("Specify whether the mode should average by player count or not")
+        .setRequired(true)
+        .addChoice("Ravengarde", "Ravengarde")
+        .addChoice("Ravenwood", "Ravenwood")
+        .addChoice("Ravenheart", "Ravenheart")
+    )
+    .addIntegerOption((option) =>
+      option.setName("score").setDescription("Highest score by user").setRequired(true)
+    )
+    .addUserOption((option) =>
+      option.setName("user").setDescription("Select a user").setRequired(true)
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("participated-accounts")
+        .setDescription("How many accounts did this user participate with?")
+    ),
+  new SlashCommandBuilder()
+    .setName("remove-event")
+    .setDescription("Removes a user's run from the specified event")
+    .addStringOption((option) =>
+      option
+        .setName("event")
+        .setDescription("What event this is for")
+        .setRequired(true)
+        .addChoice("Fire Zone", "Fire")
+        .addChoice("Water Zone", "Water")
+        .addChoice("Light Zone", "Light")
+        .addChoice("Dark Zone", "Dark")
+        .addChoice("Earth Zone", "Earth")
+        .addChoice("Wind Zone", "Wind")
+        .addChoice("Thunder Zone", "Thunder")
+    )
+    .addStringOption((option) =>
+      option
+        .setName("familia")
+        .setDescription("Specify whether the mode should average by player count or not")
+        .setRequired(true)
+        .addChoice("Ravengarde", "Ravengarde")
+        .addChoice("Ravenwood", "Ravenwood")
+        .addChoice("Ravenheart", "Ravenheart")
+    )
+    .addUserOption((option) =>
+      option.setName("user").setDescription("Select a user").setRequired(true)
+    ),
+  new SlashCommandBuilder()
+    .setName("clear-event")
+    .setDescription("Clears an event for all users")
+    .addStringOption((option) =>
+      option
+        .setName("event")
+        .setDescription("What event this is for")
+        .setRequired(true)
+        .addChoice("Fire Zone", "Fire")
+        .addChoice("Water Zone", "Water")
+        .addChoice("Light Zone", "Light")
+        .addChoice("Dark Zone", "Dark")
+        .addChoice("Earth Zone", "Earth")
+        .addChoice("Wind Zone", "Wind")
+        .addChoice("Thunder Zone", "Thunder")
+    ),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);
